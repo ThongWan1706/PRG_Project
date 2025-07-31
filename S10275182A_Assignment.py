@@ -514,4 +514,6 @@ def main():
             print("Exiting game. Goodbye!")
             break
 
+print("Hello World")
 main()
+
