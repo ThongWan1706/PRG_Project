@@ -121,7 +121,7 @@ def display_map_in_mine(current_game_map, current_fog, current_player, current_p
                 if nx == current_player['x'] and ny == current_player['y']:
                     row_str += 'M' 
                 elif current_fog[ny][nx]:
-                    row_str += '?' # Fogged area 
+                    row_str += '?' # Fogged area in the map
                 elif current_portal_pos['x'] == nx and current_portal_pos['y'] == ny:
                     row_str += 'P' # Portal stone location 
                 else:
@@ -141,6 +141,7 @@ def show_main_menu():
     print("--- Main Menu ----")
     print("(N)ew game")
     print("(L)oad saved game")
+    print("(V)iew Top Scores")
     print("(Q)uit")
     print("------------------")
 
@@ -213,9 +214,44 @@ def handle_main_menu():
         load_game()
     elif choice == 'Q' or choice.upper() == "Q":
         return 'quit'
+    elif choice == "V" or choice.upper() == "V":
+        return 
     else:
-        print("Invalid choice. Please choose N, L, or Q.")
+        print("Invalid choice. Please choose N, L, Q or O.")
         return 'main_menu'
+
+#This function is to save the score of the player once they achieve the game goal
+def save_score(player):
+    scores_file = "scores.json"
+
+    #record in the file
+    new_score = {
+        "name": player["name"],
+        "GP": player["GP"],
+        "days": player["day"],
+        "steps": player["steps_taken_total"]
+    }
+
+    # If file exists, load scores; else start with empty list
+    if os.path.exists(scores_file):
+        with open(scores_file, "r") as f:
+            scores = json.load(f)
+    else:
+        scores = []
+
+    # Add the new score in the file
+    scores.append(new_score)
+
+    # Save back to the file
+    with open(scores_file, "w") as f:
+        json.dump(scores, f, indent=4)
+
+    print("Score saved!")
+
+#This function shows the top scores for each game that player done
+def show_top_scores():
+    if not os.path.exists("scores.json"):
+        print("No scores yet. Win the game!")
 
 # Town Menu function (Able to choose)
 def handle_town_menu():
@@ -282,6 +318,8 @@ def check_win_condition():
         print("You now have enough to retire and play video games every day.") 
         print(f"And it only took you {player['day']} days and {player['steps_taken_total']} steps! You win!")
         print("-------------------------------------------------------------")
+        #Save the file once you win
+
     return 'town' # Stay in town if not won
 
 # Shop menu function (Able to choose)
