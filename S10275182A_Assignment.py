@@ -9,7 +9,7 @@
 # Once the player got at least 500 GP, they win the game
 
 from random import randint
-import json # For saving game progress
+import json
 import os
 
 # Steps:
@@ -331,8 +331,7 @@ def upgrade_backpack():
     else:
         print(f"Not enough GP! You need {upgrade_cost} GP to upgrade.")
 
-# Upgrade pickaxe in the shop 
-
+# Upgrade pickaxe in the shop
 def upgrade_pickaxe():
     global player
     if player['pickaxe_level'] == 1:
@@ -386,7 +385,7 @@ def handle_mine_menu():
         print("You place your portal stone here and zap back to town..") 
         use_portal_stone()
         return 'town' # Automatically return to town if turns run out 
-    return 'mine' # Stay in mine if not returning to town
+    return 'mine'
 
 # Moving the player around in the mine
 def move_player(direction):
