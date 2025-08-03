@@ -251,7 +251,14 @@ def save_score(player):
 #This function shows the top scores for each game that player done
 def show_top_scores():
     if not os.path.exists("scores.json"):
-        print("No scores yet. Win the game!")
+        print("\nNo scores yet.")
+        return
+
+    with open("scores.json", "r") as file:
+        scores = json.load(file)
+        print("\n-- Scores --")
+        for s in scores:
+            print(s)
 
 # Town Menu function (Able to choose)
 def handle_town_menu():
