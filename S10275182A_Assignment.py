@@ -558,5 +558,6 @@ def main():
             print("Exiting game. Goodbye!")
             break
 
-main()
+if __name__ == "__main__":
+    main()
 
