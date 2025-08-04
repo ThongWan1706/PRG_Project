@@ -404,7 +404,7 @@ def upgrade_pickaxe():
 
         else:
             print(f"Not enough GP! You need {cost} GP to upgrade to Level 3.")
-            
+
     else:
         print("Your pickaxe is already at the maximum level (Level 3).")
 
@@ -422,15 +422,20 @@ def handle_mine_menu():
         
     if action in ['W', 'A', 'S', 'D']:
         move_player(action)
+
     elif action == 'M':
         draw_map(game_map, fog, player)
+
     elif action == 'I':
         show_player_information(player)
+
     elif action == 'P':
         use_portal_stone()
         return 'town'
+    
     elif action == 'Q':
         return handle_main_menu()
+    
     else:
         print("Invalid action. Please choose W, A, S, D, M, I, P, or Q.")
 
@@ -440,6 +445,7 @@ def handle_mine_menu():
         print("You place your portal stone here and zap back to town..") 
         use_portal_stone()
         return 'town' # Automatically return to town if turns run out 
+    
     return 'mine'
 
 # Moving the player around in the mine
@@ -474,8 +480,10 @@ def move_player(direction):
         required_level = 0
         if target_cell == 'C':
             required_level = 1
+
         elif target_cell == 'S':
             required_level = 2
+
         elif target_cell == 'G':
             required_level = 3
         
@@ -521,8 +529,10 @@ def mine_ore(mineral_symbol):
     if actual_pieces_mined > 0:
         player['ore'][mineral_type] += actual_pieces_mined
         print(f"You mined {actual_pieces_mined} piece(s) of {mineral_type}.") 
+
         if actual_pieces_mined < pieces_mined:
             print(f"...but you can only carry {space_left} more piece(s)!") 
+            
     else:
         print(f"You tried to mine {mineral_type}, but your backpack is full.")
 
