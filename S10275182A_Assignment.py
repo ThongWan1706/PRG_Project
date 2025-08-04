@@ -40,7 +40,7 @@ pickaxe_price = [50, 150] #For upgrading the pickaxe
 # It also updates MAP_WIDTH and MAP_HEIGHT
 def load_map(filename, map_struct):
     global MAP_WIDTH, MAP_HEIGHT
-    # Read File
+    # Read the file
     with open("level1.txt", 'r') as map_file:
         map_struct.clear()
 
@@ -62,7 +62,7 @@ def clear_fog(current_fog, current_player):
             if 0 <= nx < MAP_WIDTH and 0 <= ny < MAP_HEIGHT:
                 current_fog[ny][nx] = False
 
-#This function is when N is chosen at the main menu to start a new game
+#This function is when N (New Game) is chosen at the main menu to start a new game
 def initialize_game():
     global player, game_map, fog, portal_position, MAP_WIDTH, MAP_HEIGHT
 
@@ -75,6 +75,8 @@ def initialize_game():
     # Initialize player
     player['name'] = input("Greetings, miner! What is your name? ") 
     print(f"Pleased to meet you, {player['name']}. Welcome to Sundrop Town!") 
+
+    #Setting up the things needed for the user
     player['x'] = 0
     player['y'] = 0
     player['ore'] = {'copper': 0, 'silver': 0, 'gold': 0} 
@@ -111,7 +113,7 @@ def display_map_in_mine(current_game_map, current_fog, current_player, current_p
     print("\n")
     print(f"DAY {current_player['day']}")
     print("+---+" )
-    # Print 3x3 viewport
+    # Print 3x3 view around us in the mine
     for dy in range(-1, 2):
         row_str = "|"
         for dx in range(-1, 2):
@@ -532,7 +534,7 @@ def mine_ore(mineral_symbol):
 
         if actual_pieces_mined < pieces_mined:
             print(f"...but you can only carry {space_left} more piece(s)!") 
-            
+
     else:
         print(f"You tried to mine {mineral_type}, but your backpack is full.")
 
@@ -578,6 +580,7 @@ def main():
             print("Exiting game. Goodbye!")
             break
 
+#Run the code
 if __name__ == "__main__":
     main()
 
