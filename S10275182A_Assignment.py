@@ -274,25 +274,31 @@ def handle_town_menu():
     if choice == 'B' or choice.upper() == "B":
         handle_shop_menu()
         return 'town'
+    
     elif choice == 'I' or choice.upper() == "I":
         show_player_information(player)
         return 'town'
+    
     elif choice == 'M' or choice.upper() == "M":
         draw_map(game_map, fog, player) 
         return 'town'
+    
     elif choice == 'E' or choice.upper() == "E":
         if portal_position['x'] != -1 and portal_position['y'] != -1:
             player['x'] = portal_position['x']
             player['y'] = portal_position['y']
         clear_fog(fog, player)
         return 'mine'
+    
     elif choice == 'V' or choice.upper() == "V":
         # TODO: Implement save_game()
         save_game(game_map, fog, player)
         print("Game saved.") 
         return 'town'
+    
     elif choice == 'Q' or choice.upper() == "Q":
         return 'main_menu'
+    
     else:
         print("Invalid choice. Please choose B, I, M, E, V, or Q.")
         return 'town'
@@ -385,16 +391,20 @@ def upgrade_pickaxe():
             player['GP'] -= cost
             player['pickaxe_level'] = 2
             print("Congratulations! You can now mine silver!")
+
         else:
             print(f"Not enough GP! You need {cost} GP to upgrade to Level 2.")
+
     elif player['pickaxe_level'] == 2:
         cost = pickaxe_price[1] # Use 150 GP 
         if player['GP'] >= cost:
             player['GP'] -= cost
             player['pickaxe_level'] = 3
             print("Congratulations! You can now mine gold!")
+
         else:
             print(f"Not enough GP! You need {cost} GP to upgrade to Level 3.")
+            
     else:
         print("Your pickaxe is already at the maximum level (Level 3).")
 
