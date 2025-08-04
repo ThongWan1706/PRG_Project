@@ -484,6 +484,7 @@ def move_player(direction):
     # Check pickaxe level for mining
     if target_cell in ['C', 'S', 'G']:
         required_level = 0
+        
         if target_cell == 'C':
             required_level = 1
 
