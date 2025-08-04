@@ -212,12 +212,16 @@ def handle_main_menu():
     if choice == 'N' or choice.upper() == "N":
         initialize_game()
         return 'town'
+    
     elif choice == 'L' or choice.upper() == "L":
         load_game()
+
     elif choice == 'Q' or choice.upper() == "Q":
         return 'quit'
+    
     elif choice == "V" or choice.upper() == "V":
         return 
+    
     else:
         print("Invalid choice. Please choose N, L, Q or O.")
         return 'main_menu'
