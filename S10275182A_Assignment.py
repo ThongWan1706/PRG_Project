@@ -341,6 +341,7 @@ def check_win_condition():
         print(f"And it only took you {player['day']} days and {player['steps_taken_total']} steps! You win!")
         print("-------------------------------------------------------------")
         #Save the file once you win
+        
     else:
         print("Oops! You didn't win the game. It's okay! You can start over again!")
         print("(S)tart a new game")
