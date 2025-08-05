@@ -344,11 +344,16 @@ def check_win_condition():
     else:
         print("Oops! You didn't win the game. It's okay! You can start over again!")
         print("(S)tart a new game")
-        print("(Q)uit to main menu")
+        print("(C)lose the game")
 
         choice = input("Your choice? ").strip().upper() 
-        
-        return 'town' # Stay in town if not won
+
+        if choice == "S" or choice.upper()=="S":
+            return handle_main_menu()
+        elif choice == "C" or choice.upper()=="C":
+            return "quit"
+        else:
+            print("Invalid choice. Please choose S or Q.")
 
 # Shop menu function (Able to choose)
 def handle_shop_menu():
