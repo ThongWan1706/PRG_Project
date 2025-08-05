@@ -56,12 +56,12 @@ def load_map(filename, map_struct):
 # This function clears the fog at the 3x3 square around the player while discovering the mine
 def clear_fog(current_fog, current_player):
     global MAP_WIDTH, MAP_HEIGHT
-    for dy in range(-1, 2):
-        for dx in range(-1, 2):
-            nx = current_player['x'] + dx
-            ny = current_player['y'] + dy
-            if 0 <= nx < MAP_WIDTH and 0 <= ny < MAP_HEIGHT:
-                current_fog[ny][nx] = False
+    for row_change in range(-1, 2):
+        for col_change in range(-1, 2):
+            target_x = current_player['x'] + col_change
+            target_y = current_player['y'] + row_change
+            if 0 <= target_x < MAP_WIDTH and 0 <= target_y < MAP_HEIGHT:
+                current_fog[target_y][target_x] = False
 
 #This function is when N (New Game) is chosen at the main menu to start a new game
 def initialize_game():
@@ -110,31 +110,33 @@ def draw_map(game_map, fog, player):
         print(row)
 
 # This function draws the map in the mine
-def display_map_in_mine(current_game_map, current_fog, current_player, current_portal_pos):
+def display_map_in_mine(game_map, fog_map, player, portal):
     print("\n")
-    print(f"DAY {current_player['day']}")
-    print("+---+" )
-    # Print 3x3 view around us in the mine
-    for dy in range(-1, 2):
-        row_str = "|"
-        for dx in range(-1, 2):
-            nx = current_player['x'] + dx
-            ny = current_player['y'] + dy
-            if 0 <= nx < MAP_WIDTH and 0 <= ny < MAP_HEIGHT:
-                if nx == current_player['x'] and ny == current_player['y']:
-                    row_str += 'M' 
-                elif current_fog[ny][nx]:
-                    row_str += '?' # Fogged area in the map
-                elif current_portal_pos['x'] == nx and current_portal_pos['y'] == ny:
-                    row_str += 'P' # Portal stone location 
+    print(f"DAY {player['day']}")
+    print("+---+")
+
+    for row_change in range(-1, 2):
+        row_display = "|"
+        for column_change in range(-1, 2):
+            map_column = player['x'] + column_change
+            map_row = player['y'] + row_change
+
+            if 0 <= map_column < MAP_WIDTH and 0 <= map_row < MAP_HEIGHT:
+                if map_column == player['x'] and map_row == player['y']:
+                    row_display += 'M'  # Player
+                elif fog_map[map_row][map_column]:
+                    row_display += '?'  # Fog
+                elif portal['x'] == map_column and portal['y'] == map_row:
+                    row_display += 'P'  # Portal
                 else:
-                    row_str += current_game_map[ny][nx]
+                    row_display += game_map[map_row][map_column]
             else:
-                row_str += '#'
-        print(row_str + "|")
-    print("+---+" )
+                row_display += '#'  # Outside bounds
+        print(row_display + "|")
+    print("+---+")
+
     
-    print(f"Turns left: {current_player['turns_left_today']} Load {sum(current_player['ore'].values())}/{current_player['backpack_capacity']} Steps: {current_player['steps_taken_total']}") 
+    print(f"Turns left: {player['turns_left_today']} Load {sum(player['ore'].values())}/{player['backpack_capacity']} Steps: {player['steps_taken_total']}") 
     print("(WASD) to move") 
     print("(M)ap, (I)nformation, (P)ortal, (Q)uit to main menu") 
 
@@ -221,7 +223,7 @@ def handle_main_menu():
         return 'quit'
     
     elif choice == "V" or choice.upper() == "V":
-        return 
+        show_top_scores()
     
     else:
         print("Invalid choice. Please choose N, L, Q or O.")
@@ -258,8 +260,8 @@ def save_score(player):
 #This function shows the top scores for each game that player done
 def show_top_scores():
     if not os.path.exists("scores.json"):
-        print("\nNo scores yet.")
-        return
+        print("No scores yet.")
+        return handle_main_menu()
 
     with open("scores.json", "r") as file:
         scores = json.load(file)
@@ -339,8 +341,14 @@ def check_win_condition():
         print(f"And it only took you {player['day']} days and {player['steps_taken_total']} steps! You win!")
         print("-------------------------------------------------------------")
         #Save the file once you win
+    else:
+        print("Oops! You didn't win the game. It's okay! You can start over again!")
+        print("(S)tart a new game")
+        print("(Q)uit to main menu")
 
-    return 'town' # Stay in town if not won
+        choice = input("Your choice? ").strip().upper() 
+        
+        return 'town' # Stay in town if not won
 
 # Shop menu function (Able to choose)
 def handle_shop_menu():
