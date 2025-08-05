@@ -40,6 +40,7 @@ pickaxe_price = [50, 150] #For upgrading the pickaxe
 # It also updates MAP_WIDTH and MAP_HEIGHT
 def load_map(filename, map_struct):
     global MAP_WIDTH, MAP_HEIGHT
+
     # Read the file
     with open("level1.txt", 'r') as map_file:
         map_struct.clear()
@@ -52,7 +53,7 @@ def load_map(filename, map_struct):
     MAP_HEIGHT = len(map_struct)
     MAP_WIDTH = len(map_struct[0]) if MAP_HEIGHT > 0 else 0
 
-# This function clears the fog of war at the 3x3 square around the player while discovering the mine
+# This function clears the fog at the 3x3 square around the player while discovering the mine
 def clear_fog(current_fog, current_player):
     global MAP_WIDTH, MAP_HEIGHT
     for dy in range(-1, 2):
@@ -72,7 +73,7 @@ def initialize_game():
     # Initialize fog map
     fog = [[True for _ in range(MAP_WIDTH)] for _ in range(MAP_HEIGHT)]
 
-    # Initialize player
+    # Starting the game
     player['name'] = input("Greetings, miner! What is your name? ") 
     print(f"Pleased to meet you, {player['name']}. Welcome to Sundrop Town!") 
 
@@ -484,7 +485,7 @@ def move_player(direction):
     # Check pickaxe level for mining
     if target_cell in ['C', 'S', 'G']:
         required_level = 0
-        
+
         if target_cell == 'C':
             required_level = 1
 
