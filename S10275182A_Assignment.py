@@ -268,6 +268,7 @@ def show_top_scores():
         print("\n-- Scores --")
         for s in scores:
             print(s)
+            return handle_main_menu()
 
 # Town Menu function (Able to choose)
 def handle_town_menu():
