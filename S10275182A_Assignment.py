@@ -135,7 +135,6 @@ def display_map_in_mine(game_map, fog_map, player, portal):
         print(row_display + "|")
     print("+---+")
 
-    
     print(f"Turns left: {player['turns_left_today']} Load {sum(player['ore'].values())}/{player['backpack_capacity']} Steps: {player['steps_taken_total']}") 
     print("(WASD) to move") 
     print("(M)ap, (I)nformation, (P)ortal, (Q)uit to main menu") 
@@ -340,9 +339,9 @@ def check_win_condition():
         print("You now have enough to retire and play video games every day.") 
         print(f"And it only took you {player['day']} days and {player['steps_taken_total']} steps! You win!")
         print("-------------------------------------------------------------")
-        #Save the file once you win
+        save_score(player)
         
-    else:
+    elif player['day'] == 20 and player['GP'] <= WIN_GP:
         print("Oops! You didn't win the game. It's okay! You can start over again!")
         print("(S)tart a new game")
         print("(C)lose the game")
