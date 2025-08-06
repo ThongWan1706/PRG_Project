@@ -255,6 +255,7 @@ def save_score(player):
         json.dump(scores, f, indent=4)
 
     print("Score saved!")
+    return handle_main_menu()
 
 #This function shows the top scores for each game that player done
 def show_top_scores():
