@@ -343,7 +343,7 @@ def check_win_condition():
         print("-------------------------------------------------------------")
         save_score(player)
         
-    elif player['day'] == 20 and player['GP'] <= WIN_GP:
+    elif player['day'] == 20 and player['GP'] < WIN_GP:
         print("Oops! You didn't win the game. It's okay! You can start over again!")
         print("(S)tart a new game")
         print("(C)lose the game")
