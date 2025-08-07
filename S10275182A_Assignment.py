@@ -477,13 +477,11 @@ def move_player(direction):
     current_x, current_y = player['x'], player['y']
     new_x, new_y = current_x, current_y
 
-    mined_successfully = False
-
     if direction == 'W' or direction.upper() == "W":
         new_y -= 1
     elif direction == 'A' or direction.upper() == "A":
         new_x -= 1
-    elif direction == 'S' or direction.upper()== "S":
+    elif direction == 'S' or direction.upper() == "S":
         new_y += 1
     elif direction == 'D' or direction.upper() == "D":
         new_x += 1
@@ -495,46 +493,37 @@ def move_player(direction):
 
     target_cell = game_map[new_y][new_x]
 
-    # Check if target is a mineral node and backpack is full 
-    if target_cell in ['C', 'S', 'G'] and sum(player['ore'].values()) >= player['backpack_capacity']:
-        print("You can't carry any more, so you can't go that way.")
-
-    # Check pickaxe level for mining
+    # Stop mining for mineral if the backpack isN full
     if target_cell in ['C', 'S', 'G']:
-        required_level = 0
+        if sum(player['ore'].values()) >= player['backpack_capacity']:
+            print("You can't carry any more, so you can't go that way.")
+            return  
 
-        if target_cell == 'C':
-            required_level = 1
-
-        elif target_cell == 'S':
-            required_level = 2
-
-        elif target_cell == 'G':
-            required_level = 3
-        
+        required_level = {'C': 1, 'S': 2, 'G': 3}[target_cell]
         if player['pickaxe_level'] < required_level:
             print(f"Your pickaxe is not strong enough to mine {mineral_names[target_cell]} ore (requires Level {required_level}).")
-            return # Stay on the spot if pickaxe level is insufficient to mine
+            return  
 
-    # If done checking the target, update player position to move
+    # Update position
     player['x'] = new_x
     player['y'] = new_y
     player['steps_taken_total'] += 1
 
-    # Clear fog around new position
     clear_fog(fog, player)
 
-    # Handle stepping on Town 'T' 
     if target_cell == 'T':
         print("You've returned to town.")
         use_portal_stone()
         return
 
-    # Take the orb if stepping on a mineral node 
+    # Only mine if there's mineral 
     if target_cell in ['C', 'S', 'G']:
         mined_successfully = mine_ore(target_cell)
-    if mined_successfully:
-        game_map[new_y][new_x] = ' '
+        if mined_successfully:
+            game_map[new_y][new_x] = ' ' 
+        else:
+            print("You can't carry any more, so you can't go that way.")
+
 
 # Mining Orbs function (Idenitfy which mine orb we mine)
 def mine_ore(mineral_symbol):
