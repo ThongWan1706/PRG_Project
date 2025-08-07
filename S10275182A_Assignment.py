@@ -95,9 +95,6 @@ def initialize_game():
     portal_position['x'] = -1
     portal_position['y'] = -1
 
-    handle_town_menu()
-    
-
 # This function draws the entire map, covered by the fog
 def draw_map(game_map, fog, player):
     print("\n--- Full Map View ---")
@@ -229,7 +226,7 @@ def handle_main_menu():
     
     else:
         print("Invalid choice. Please choose N, L, Q or O.")
-        return 'main_menu'
+        return handle_main_menu()
 
 #This function is to save the score of the player once they achieve the game goal
 def save_score(player):
@@ -480,6 +477,8 @@ def move_player(direction):
     current_x, current_y = player['x'], player['y']
     new_x, new_y = current_x, current_y
 
+    mined_successfully = False
+
     if direction == 'W' or direction.upper() == "W":
         new_y -= 1
     elif direction == 'A' or direction.upper() == "A":
@@ -528,39 +527,39 @@ def move_player(direction):
     # Handle stepping on Town 'T' 
     if target_cell == 'T':
         print("You've returned to town.")
-        use_portal_stone() # Resets position to 0,0 as the user use the protal
+        use_portal_stone()
         return
 
     # Take the orb if stepping on a mineral node 
     if target_cell in ['C', 'S', 'G']:
-        mine_ore(target_cell)
-        game_map[new_y][new_x] = ' ' # Replace mined node with empty space
+        mined_successfully = mine_ore(target_cell)
+    if mined_successfully:
+        game_map[new_y][new_x] = ' '
 
 # Mining Orbs function (Idenitfy which mine orb we mine)
 def mine_ore(mineral_symbol):
     global player
     mineral_type = mineral_names[mineral_symbol]
     min_pieces, max_pieces = produce_mineral[mineral_type]
-    
-    # Calculate how many pieces can actually be picked up
+
     space_left = player['backpack_capacity'] - sum(player['ore'].values())
-    
+
     if space_left <= 0:
         print("Your backpack is full! Cannot mine any more.")
-        return 
+        return False
 
     pieces_mined = randint(min_pieces, max_pieces)
     actual_pieces_mined = min(pieces_mined, space_left)
 
     if actual_pieces_mined > 0:
         player['ore'][mineral_type] += actual_pieces_mined
-        print(f"You mined {actual_pieces_mined} piece(s) of {mineral_type}.") 
-
+        print(f"You mined {actual_pieces_mined} piece(s) of {mineral_type}.")
         if actual_pieces_mined < pieces_mined:
-            print(f"...but you can only carry {space_left} more piece(s)!") 
+            print(f"...but you can only carry {space_left} more piece(s)!")
+        return True
 
-    else:
-        print(f"You tried to mine {mineral_type}, but your backpack is full.")
+    print(f"You tried to mine {mineral_type}, but your backpack is full.")
+    return False
 
 # Using the portal
 def use_portal_stone():
