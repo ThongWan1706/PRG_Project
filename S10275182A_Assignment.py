@@ -95,6 +95,9 @@ def initialize_game():
     portal_position['x'] = -1
     portal_position['y'] = -1
 
+    handle_town_menu()
+    
+
 # This function draws the entire map, covered by the fog
 def draw_map(game_map, fog, player):
     print("\n--- Full Map View ---")
