@@ -34,7 +34,7 @@ minerals = ['copper', 'silver', 'gold']
 mineral_names = {'C': 'copper', 'S': 'silver', 'G': 'gold'}
 price_mineral = {'copper': (1, 3),'silver': (5, 8),'gold': (10, 18)}
 produce_mineral = {'copper': (1, 3),'silver': (1, 2),'gold': (1, 1)}
-pickaxe_price = [50, 150] #For upgrading the pickaxe
+pickaxe_price = [50, 150] 
 
 # This function loads a map structure (a nested list) from a file
 # It also updates MAP_WIDTH and MAP_HEIGHT
@@ -326,7 +326,7 @@ def sell_ore():
             gp_earned = player['ore'][mineral_type] * price_per_piece
             total_sold_gp += gp_earned
             print(f"You sell {player['ore'][mineral_type]} {mineral_type} ore for {gp_earned} GP.") 
-            player['ore'][mineral_type] = 0  # Reset ore count after selling
+            player['ore'][mineral_type] = 0  # Empty the bag from ores after selling
 
     player['GP'] += total_sold_gp
     print(f"You now have {player['GP']} GP!")
@@ -355,7 +355,7 @@ def check_win_condition():
         elif choice == "C" or choice.upper()=="C":
             return "quit"
         else:
-            print("Invalid choice. Please choose S or Q.")
+            print("Invalid choice. Please choose S or C.")
 
 # Shop menu function (Able to choose)
 def handle_shop_menu():
@@ -389,7 +389,7 @@ def handle_shop_menu():
         elif choice == 'B' or choice.upper() == "B": 
             upgrade_backpack()
         elif choice == 'L' or choice.upper() == "L":
-            break # Exit shop menu 
+            break 
         else:
             print("Invalid choice. Please choose P, B, or L.")
 
