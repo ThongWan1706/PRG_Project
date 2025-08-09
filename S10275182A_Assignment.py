@@ -109,7 +109,7 @@ def draw_map(game_map, fog, player):
                 row += game_map[y][x]
         print(row)
 
-# This function draws the map in the mine
+# This function shows the map in the mine
 def display_map_in_mine(game_map, fog_map, player, portal):
     print("\n")
     print(f"DAY {player['day']}")
