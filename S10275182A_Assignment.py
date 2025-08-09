@@ -20,7 +20,7 @@ import os
 
 # Constant Variables
 TURNS_PER_DAY = 20
-WIN_GP = 500
+WIN_GP = 500 
 
 # Map and game state
 player = {}
