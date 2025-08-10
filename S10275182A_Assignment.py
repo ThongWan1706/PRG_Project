@@ -179,32 +179,36 @@ def show_player_information(player):
 
 #This function is to load the game for past progress
 def load_game():
-    filename = "savefile.json"
-    
+    global player, game_map, fog, portal_position
+    filename = "savegame.json"
+
     if not os.path.exists(filename):
         print("No saved game found!")
-        return handle_main_menu()
-    
+        return 'main_menu'
+
     with open(filename, "r") as f:
         data = json.load(f)
-    
-    player = data["player"]
-    mine_map = data["mine_map"]
-    fog_map = data["fog_map"]
-    current_day = data["current_day"]
-    
-    print(f"Welcome back, {player['name']}! Loaded game from Day {current_day}.")
-    
-    return player, mine_map, fog_map, current_day
+
+    player = data['player']
+    game_map = data['game_map']
+    fog = data['fog']
+    portal_position = data.get('portal_position', {'x': -1, 'y': -1})
+
+    print(f"Welcome back, {player['name']}! Loaded game from Day {player['day']}.")
+    return handle_town_menu()
 
 # This function saves the game
 def save_game(game_map, fog, player):
-    save_data = {'map': game_map,'fog': fog,'player': player}
-
-    with open('savegame.json', 'w') as save_file:
-        json.dump(save_data, save_file)
-
+    save_data = {
+        'player': player,
+        'game_map': game_map,
+        'fog': fog,
+        'portal_position': portal_position
+    }
+    with open('savegame.json', 'w') as f:
+        json.dump(save_data, f)
     print("Game saved successfully.")
+
 
 # Main Menu function (Able to choose)
 def handle_main_menu():
@@ -303,7 +307,6 @@ def handle_town_menu():
     elif choice == 'V' or choice.upper() == "V":
         # TODO: Implement save_game()
         save_game(game_map, fog, player)
-        print("Game saved.") 
         return 'town'
     
     elif choice == 'Q' or choice.upper() == "Q":
