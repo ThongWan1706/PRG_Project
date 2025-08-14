@@ -177,7 +177,7 @@ def show_player_information(player):
     print(f"Steps taken: {player['steps_taken_total']}") 
     print("------------------------------")
 
-#This function is to load the game for past progress
+#This function is to load past game progress
 def load_game():
     global player, game_map, fog, portal_position
     filename = "savegame.json"
@@ -191,11 +191,13 @@ def load_game():
 
     player = data['player']
     game_map = data['game_map']
-    fog = data['fog']
+    fog = data['fog']  
     portal_position = data.get('portal_position', {'x': -1, 'y': -1})
 
     print(f"Welcome back, {player['name']}! Loaded game from Day {player['day']}.")
-    return handle_town_menu()
+
+    return handle_town_menu(skip_fog_reset=True)
+
 
 # This function saves the game
 def save_game(game_map, fog, player):
@@ -220,7 +222,7 @@ def handle_main_menu():
         return 'town'
     
     elif choice == 'L' or choice.upper() == "L":
-        load_game()
+        return load_game()
 
     elif choice == 'Q' or choice.upper() == "Q":
         return 'quit'
@@ -272,10 +274,10 @@ def show_top_scores():
         print("\n-- Scores --")
         for s in scores:
             print(s)
-            return handle_main_menu()
+        return handle_main_menu()
 
 # Town Menu function (Able to choose)
-def handle_town_menu():
+def handle_town_menu(skip_fog_reset=False):
     global player, game_map, fog, portal_position
     
     # Auto-sell ore when in town
@@ -588,7 +590,7 @@ def main():
         if current_game_state == 'main_menu':
             current_game_state = handle_main_menu()
         elif current_game_state == 'town':
-            current_game_state = handle_town_menu()
+            current_game_state = handle_town_menu(skip_fog_reset=False)
         elif current_game_state == 'mine':
             current_game_state = handle_mine_menu()
         elif current_game_state == 'quit':
