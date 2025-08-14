@@ -6,9 +6,15 @@
         "steps": 213
     },
     {
-        "name": "Wan",
+        "name": "Wanouo",
         "GP": 516,
         "days": 19,
         "steps": 205
+    },
+    {
+        "name": "Mephisto",
+        "GP": 556,
+        "days": 18,
+        "steps": 220
     }
 ]
