@@ -271,10 +271,15 @@ def show_top_scores():
 
     with open("scores.json", "r") as file:
         scores = json.load(file)
-        print("\n-- Scores --")
-        for s in scores:
-            print(s)
-        return handle_main_menu()
+
+    print("\n-- Scores --")
+    print(f"{'Name':<12}{'GP':<8}{'Days':<8}{'Steps':<8}")
+    print("-" * 40)
+
+    for s in scores:
+        print(f"{s['name']:<12}{s['GP']:<8}{s['days']:<8}{s['steps']:<8}")
+
+    return handle_main_menu()
 
 # Town Menu function (Able to choose)
 def handle_town_menu(skip_fog_reset=False):
