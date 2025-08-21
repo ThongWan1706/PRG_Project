@@ -104,7 +104,6 @@ def initialize_game():
         player['turns_left_today'] = 10
     print(f"\nWeather today: {today_weather}! You have {player['turns_left_today']} steps today.")
 
-
 # This function draws the entire map, covered by the fog
 def draw_map(game_map, fog, player):
     print("\n--- Full Map View ---")
