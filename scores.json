@@ -18,9 +18,21 @@
         "steps": 220
     },
     {
-        "name": "Wan",
-        "GP": 504,
-        "days": 13,
-        "steps": 137
+        "name": "Reyner",
+        "GP": 524,
+        "days": 17,
+        "steps": 200
+    },
+    {
+        "name": "WanOwo",
+        "GP": 514,
+        "days": 14,
+        "steps": 120
+    },
+    {
+        "name": "XingYi",
+        "GP": 513,
+        "days": 16,
+        "steps": 145
     }
 ]

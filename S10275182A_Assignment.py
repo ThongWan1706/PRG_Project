@@ -19,7 +19,7 @@ import os
 # D	= Right
 
 # Constant Variables
-TURNS_PER_DAY = 20
+TURNS_PER_DAY = 20 #default value
 WIN_GP = 500 
 
 # Map and game state
@@ -95,6 +95,16 @@ def initialize_game():
     portal_position['x'] = -1
     portal_position['y'] = -1
 
+     # Setting the weather
+    today_weather = get_weather()
+    player['weather'] = today_weather
+    if today_weather == "Sunny":
+        player['turns_left_today'] = 20
+    else:
+        player['turns_left_today'] = 10
+    print(f"\nWeather today: {today_weather}! You have {player['turns_left_today']} steps today.")
+
+
 # This function draws the entire map, covered by the fog
 def draw_map(game_map, fog, player):
     print("\n--- Full Map View ---")
@@ -113,28 +123,26 @@ def draw_map(game_map, fog, player):
 def display_map_in_mine(game_map, fog_map, player, portal):
     print("\n")
     print(f"DAY {player['day']}")
+    print(f"Weather: {player.get('weather', 'Unknown')}")
     print("+---+")
-
     for row_change in range(-1, 2):
         row_display = "|"
         for column_change in range(-1, 2):
             map_column = player['x'] + column_change
             map_row = player['y'] + row_change
-
             if 0 <= map_column < MAP_WIDTH and 0 <= map_row < MAP_HEIGHT:
                 if map_column == player['x'] and map_row == player['y']:
-                    row_display += 'M'  # Player
+                    row_display += 'M'
                 elif fog_map[map_row][map_column]:
-                    row_display += '?'  # Fog
+                    row_display += '?'
                 elif portal['x'] == map_column and portal['y'] == map_row:
-                    row_display += 'P'  # Portal
+                    row_display += 'P'
                 else:
                     row_display += game_map[map_row][map_column]
             else:
-                row_display += '#'  # Outside bounds
+                row_display += '#'
         print(row_display + "|")
     print("+---+")
-
     print(f"Turns left: {player['turns_left_today']} Load {sum(player['ore'].values())}/{player['backpack_capacity']} Steps: {player['steps_taken_total']}") 
     print("(WASD) to move") 
     print("(M)ap, (I)nformation, (P)ortal, (Q)uit to main menu") 
@@ -165,7 +173,8 @@ def show_town_menu():
 def show_player_information(player): 
     print("\n----- Player Information -----") 
     print(f"Name: {player['name']}")
-    print(f"Portal position: ({player['x']}, {player['y']})") 
+    print(f"Portal position: ({player['x']}, {player['y']})")
+    print(f"Weather: {player.get('weather', 'Unknown')}") 
     
     # Pickaxe level display
     pickaxe_desc = {1: "copper", 2: "silver", 3: "gold"}
@@ -210,6 +219,13 @@ def save_game(game_map, fog, player):
     with open('savegame.json', 'w') as f:
         json.dump(save_data, f)
     print("Game saved successfully.")
+
+def get_weather():
+    chance = randint(1, 100)  
+    if chance <= 60:
+        return "Sunny"
+    else:
+        return "Rainy"
 
 
 # Main Menu function (Able to choose)
@@ -288,7 +304,9 @@ def handle_town_menu(skip_fog_reset=False):
     # Auto-sell ore when in town
     if sum(player['ore'].values()) > 0:
         sell_ore()
-        
+    
+
+
     show_town_menu()
     choice = input("Your choice? ").strip().upper()
 
@@ -563,18 +581,22 @@ def mine_ore(mineral_symbol):
 # Using the portal
 def use_portal_stone():
     global player, portal_position
-    
-    # Set portal position
     portal_position['x'] = player['x']
     portal_position['y'] = player['y']
-    
-    # Return player to town (0,0) and advance day 
     player['x'] = 0
     player['y'] = 0
     player['day'] += 1 
-    player['turns_left_today'] = TURNS_PER_DAY
+
+    today_weather = get_weather()
+    player['weather'] = today_weather
+    if today_weather == "Sunny":
+        player['turns_left_today'] = 20
+    else:
+        player['turns_left_today'] = 10
+    print("------------------")
+    print()
+    print(f"Weather today: {today_weather}! You have {player['turns_left_today']} steps today.")
     
-    # Clear fog at town location
     clear_fog(fog, player)
 
 # Main game loop
